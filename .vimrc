@@ -1,1 +1,0 @@
-/home/alon/.vimrc

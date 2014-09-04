@@ -1,0 +1,71 @@
+# !!!!!!!!!!!!!!! aliases !!!!!!!!
+alias 'dbgX264=sudo gdb -p `pidof x264`'
+alias 'proxmox=ssh -p 22660 alonb@mail.carmel-mng.com'
+alias 'srcVtune=source /opt/intel/vtune_amplifier_xe/amplxe-vars.sh'
+alias 'vtune=amplxe-gui'
+alias 'ecl=sudo /home/alon/Downloads/eclipse/eclipse '
+alias 'proxmox_int=ssh -p 22 alonb@172.23.50.45 '
+alias 'srcIntel=source /opt/intel/bin/compilervars.sh intel64'
+alias 'dbgCnt=sudo gdb -p `pidof beamrvideoctl`'
+alias makeErr='(make 2> errors) ; head errors | grep -A 2 "line [0-9]*\|[a-zA-Z]*\.cpp"'
+alias hgr='history | grep'
+
+function get_instances_info() {
+        INSTANCE_NAME=$1
+        aws ec2 describe-instances --filters 'Name=tag:Name,Values=*'${INSTANCE_NAME}'*' --query 'Reservations[*].Instances[*]' | python ~/workspace/scripts/ec2instanceinfo.py
+}
+alias ii="get_instances_info"
+alias refresh='source ~/.aliases'
+
+function aliases() {
+	nano +999999 ~/.aliases
+	refresh
+}
+ 
+function extract () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xjf $1     ;;
+        *.tar.gz)    tar xzf $1     ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar e $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xf $1      ;;
+        *.tbz2)      tar xjf $1     ;;
+        *.tgz)       tar xzf $1     ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)     echo "'$1' cannot be extracted via extract()" ;;
+         esac
+     else
+         echo "'$1' is not a valid file"
+     fi
+}
+
+#mkdir and cd
+function mcd() {
+  mkdir -p "$1" && cd "$1";
+}
+
+# list recursively
+alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'''
+
+
+#jump back n directories
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+# find text in any file
+ft() {
+ 
+find . -name "$2" -exec grep -il "$1" {} \;
+}
+
+alias rebuild='make clean && make'
+alias thc='thg commit &'
+alias hgp='hg push'
+alias dbgMuxer='sudo gdb -p `pidof beamrvideomuxer`'
